@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.7">
+  <link rel="stylesheet" , href="style.css">
+  <title>Vss Calculator</title>
+</head>
+
+<body>
+
+  <div class="calculator">
+
+    <p id="display">0</p>
+
+    <div class="buttons">
+
+      <button id="leftPar">(</button>
+      <button id="rigthPar">)</button>
+
+      <button id="clear">AC</button>
+
+      <button id="squareroot">√</button>
+      <button id="exp">^</button>
+
+      <button id="plus">+</button>
+      <button id="minus">-</button>
+
+      <button id="one">1</button>
+      <button id="two">2</button>
+      <button id="three">3</button>
+
+      <button id="multiply">×</button>
+
+      <button id="four">4</button>
+      <button id="five">5</button>
+      <button id="six">6</button>
+
+      <button id="divide">÷</button>
+
+      <button id="seven">7</button>
+      <button id="eight">8</button>
+      <button id="nine">9</button>
+
+      <button id="back">D</button>
+
+      <button id="zero">0</button>
+      <button id="dot">•</button>
+
+      <button id="equal">=</button>
+
+    </div>
+
+  </div>
+
+  <script type="text/javascript">
+    let text = "0";
+
+document.getElementById("one").onclick = function() {
+  addChar("1", true);
+  updateDisplay();
+}
+
+document.getElementById("two").onclick = function() {
+  addChar("2", true);
+  updateDisplay();
+}
+
+document.getElementById("three").onclick = function() {
+  addChar("3", true);
+  updateDisplay();
+}
+
+document.getElementById("four").onclick = function() {
+  addChar("4", true);
+  updateDisplay();
+}
+
+document.getElementById("five").onclick = function() {
+  addChar("5", true);
+  updateDisplay();
+}
+
+document.getElementById("six").onclick = function() {
+  addChar("6", true);
+  updateDisplay();
+}
+
+document.getElementById("seven").onclick = function() {
+  addChar("7", true);
+  updateDisplay();
+}
+
+document.getElementById("eight").onclick = function() {
+  addChar("8", true);
+  updateDisplay();
+}
+
+document.getElementById("nine").onclick = function() {
+  addChar("9", true);
+  updateDisplay();
+}
+
+document.getElementById("zero").onclick = function() {
+  addChar("0", true);
+  updateDisplay();
+}
+
+document.getElementById("dot").onclick = function() {
+
+  if (!"+-×÷^√".includes(text.charAt(text.length - 1))) {
+
+    for (let x = text.length; x >= 0; x--) {
+
+      if ("+-×÷^√".includes(text[x])) {
+        break;
+      }
+
+      if (text[x] == ".") {
+        text = text.slice(0, x) + text.slice(x + 1);
+        break;
+      }
+    }
+
+    addChar(".", false);
+
+  }
+
+  updateDisplay();
+}
+
+document.getElementById("plus").onclick = function() {
+
+  if (!"+-×÷^√".includes(text.charAt(text.length - 1))) {
+    addChar("+", false);
+  }
+
+  updateDisplay();
+}
+
+document.getElementById("minus").onclick = function() {
+
+  if (!"+-×÷^√".includes(text.charAt(text.length - 1))) {
+    addChar("-", false);
+  }
+
+  updateDisplay();
+}
+
+document.getElementById("multiply").onclick = function() {
+
+  if (!"+-×÷^√".includes(text.charAt(text.length - 1))) {
+    addChar("×", false);
+  }
+
+  updateDisplay();
+}
+
+document.getElementById("divide").onclick = function() {
+
+  if (!"+-×÷^√".includes(text.charAt(text.length - 1))) {
+    addChar("÷", false);
+  }
+
+  updateDisplay();
+}
+
+document.getElementById("back").onclick = function() {
+
+  if (text != "0") {
+
+    text = text.slice(0, text.length - 1);
+
+    if (text.charAt(text.length - 1) == "√") {
+      text = text.slice(0, text.length - 1);
+    }
+
+    if (!text) {
+      text = "0";
+    }
+
+  }
+
+  updateDisplay();
+
+}
+
+document.getElementById("leftPar").onclick = function() {
+
+  addChar("(", true);
+  updateDisplay();
+
+}
+
+document.getElementById("rigthPar").onclick = function() {
+
+  addChar(")", true);
+  updateDisplay();
+
+}
+
+document.getElementById("exp").onclick = function() {
+
+  if (!"+-×÷^√".includes(text.charAt(text.length - 1))) {
+    addChar("^", false);
+  }
+  updateDisplay();
+
+}
+
+document.getElementById("squareroot").onclick = function() {
+
+  if ("+-×÷^√".includes(text.charAt(text.length - 1)) || text == "0") {
+    addChar("√(", true);
+  }
+  updateDisplay();
+
+}
+
+document.getElementById("clear").onclick = function() {
+  text = "0";
+  updateDisplay();
+}
+
+document.getElementById("equal").onclick = function() {
+
+  let newText = "";
+  for (let x = 0; x < text.length; x++) {
+
+    if (text[x] == "×") {
+      newText += "*";
+    }
+    else if (text[x] == "÷") {
+      newText += "/";
+    }
+    else if (text[x] == "(" && "0123456789.".includes(text[x - 1])) {
+      newText += "*(";
+    }
+    else if (text[x] == "^") {
+      newText += "**";
+    }
+    else if (text[x] == "√") {
+      newText += "Math.sqrt";
+    }
+    else {
+      newText += text[x];
+    }
+
+  }
+
+  console.log(newText);
+  let getResults = new Function(`return ${newText};`);
+
+  let results = getResults();
+  console.log(results);
+
+  text = results;
+  updateDisplay();
+
+}
+
+function addChar(char, replaceZero) {
+
+  if (text == "0" && replaceZero) {
+    text = char;
+  }
+  else {
+    text += char;
+  }
+
+}
+
+function updateDisplay() {
+
+  document.getElementById("display").innerHTML = text;
+
+}
+  </script>
+
+</body>
+<style>
+  body {
+  
+    background-image: linear-gradient(0, orange, blue);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+  
+  }
+  
+  .calculator {
+  
+    border: 10px solid #003300;
+    width: 190px;
+    margin: auto;
+    border-radius: 7px;
+    position: relative;
+  
+    background-color: green;
+  
+  }
+  
+  #display {
+  
+    font-size: 25px;
+    padding: 10px;
+    text-align: right;
+    width: 170px;
+    margin: auto;
+    background-color: #1F551F;
+    border-bottom: 3px solid #003300;
+  
+  }
+  
+  .buttons button {
+  
+    font-size: 25px;
+    width: 35px;
+    margin: 5px;
+    background-image: linear-gradient(0, pink, lightgreen);
+    border-radius: 7px;
+    border-color: hotpink;
+  
+  }
+  
+  .buttons {
+  
+    width: 200px;
+    margin: auto;
+  
+  }
+  
+  #equal,
+  #clear {
+  
+    width: 85px;
+  
+  }
+</style>
+</html>
